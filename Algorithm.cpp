@@ -10,7 +10,7 @@
 #include "Algorithm.h"
 #include "RandomVector.h"
 
-Algorithm::Algorithm(int T, int L, int numberOfNodes) {
+Algorithm::Algorithm(double temperature, int loopSteps, int numberOfNodes) {
 
     Graph *graph = new Graph(numberOfNodes);
     graph->createComleteGraph();
@@ -21,8 +21,10 @@ Algorithm::Algorithm(int T, int L, int numberOfNodes) {
 
 
 //    this->k = k;
-    this->T = T;
-    this->L = L;
+    //temperature = T
+    this->temerature = temperature;
+    //loopSteps = L
+    this->loopSteps = loopSteps;
 
     //popluation of vector
     simpleOrderedPermutation = vector<int>(numberOfNodes);
@@ -77,7 +79,7 @@ void Algorithm::changeValuesOfPermutations(vector<int> newPermutation) {
         this->bestPermutationValue = newPermutationValue;
     } else {
         double r = randomValueZeroToOne(0, 1);
-        double exponent = exp(-(this->previousPermutationValue - this->bestPermutationValue / this->T));
+        double exponent = exp(-(this->previousPermutationValue - this->bestPermutationValue / this->temerature));
         if (r < exponent) {
             //x0 = x*
             this->previousPermutation = newPermutation;
@@ -98,24 +100,39 @@ double Algorithm::randomValueZeroToOne(const int &min, const int &max) {
 }
 
 void Algorithm::annealingMethod() {
-    int epsilon = 20;
+    int countLoops=0;
+    double epsilon = 0.5;
     //wykonuje się aż temp nie spadnie poniżej epsilon
-    while (this->T > epsilon) {
+    while (this->temerature > epsilon) {
         //k - liczba kroków podczasu szukania minimu wokół jednego rozwiązania
-        for (int k = 0; k < L; ++k) {
+        for (int k = 0; k < this->loopSteps; ++k) {
             changeValuesOfPermutations(this->nextPermutation());
 
         }
         changeTemp();
+        countLoops++;
     }
+    printEnd();
+    cout<<"countLoops  "<<countLoops<<endl;
+
 }
 
-double Algorithm::changeTemp() {
+void Algorithm::changeTemp() {
     double alfa = 0.89;
-    double temp = this->T;
+    double temp = this->temerature;
     temp = (1 - alfa) * temp;
-    return temp;
+    this->temerature=temp;
+//    return temp;
 }
+
+void Algorithm::printEnd() {
+    for(auto it = bestPermutation.begin(); it!=bestPermutation.end(); ++it ) {
+        cout<<*it;
+    }
+    cout<<endl;
+    cout<<"bestPermutationValue  "<<bestPermutationValue<<endl;
+}
+
 
 
 

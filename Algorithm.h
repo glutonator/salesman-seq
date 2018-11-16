@@ -12,10 +12,12 @@ using namespace std;
 
 class Algorithm {
 private:
-//    int k;
-    int T;
-    int L;
-    int numberOfNodes;
+
+    //temperature = T
+    double temerature;
+    //loopSteps = L
+    int loopSteps;
+
     //zawiera uporzadkowne rosnąco numery nodów
     std::vector<int> simpleOrderedPermutation;
 
@@ -30,7 +32,7 @@ private:
     Graph *graph;
 
 public:
-    Algorithm(int T, int L, int numberOfNodes);
+    Algorithm(double temperature, int loopSteps, int numberOfNodes);
 
     vector<int> nextPermutation();
 
@@ -42,7 +44,10 @@ public:
 
     void annealingMethod();
 
-    double changeTemp();
+    void changeTemp();
+
+    void printEnd();
+
 };
 
 

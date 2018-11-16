@@ -1,23 +1,29 @@
 #include <iostream>
 #include <random>
+#include <chrono>
 #include "Graph.h"
 #include "Algorithm.h"
 
+using namespace std;
 
 int main() {
-//    int numberOfNodes = 5;
-//
-//    Graph *graph = new Graph(numberOfNodes);
-//
-//    graph->createComleteGraph();
-//    graph->printGraph();
-//
-//
-//    graph->findShortestPathBetter();
+    int numberOfNodes = 10;
+    double temperature =200.0;
+    int loopSteps =20;
 
-    Algorithm algorithm = Algorithm(100,10,5);
-//    vector<int> qqq = algorithm->nextPermutation();
+    Algorithm algorithm = Algorithm(temperature,loopSteps,numberOfNodes);
+
+    // Record start time
+    auto start = std::chrono::high_resolution_clock::now();
+
+    // Portion of code to be timed
     algorithm.annealingMethod();
-    std::cout << "Hello, World!" << std::endl;
+
+    // Record end time
+    auto finish = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = finish - start;
+    std::cout << "Elapsed time: " << elapsed.count() << " s\n";
+
+
     return 0;
 }
